@@ -14,11 +14,27 @@
 // You should have received a copy of the GNU General Public License
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "cmd.hpp"
+#pragma once
 
-int main(int argc, char** argv)
+namespace utec
 {
-	utec::cmd c(argc, argv);
 
-	return c.run();
-}
+class cmd
+{
+private:
+	int argc;
+	char** argv;
+
+	[[ noreturn ]]
+	void usage(int exit_code) const;
+
+public:
+	cmd(int argc, char** argv):
+		argc(argc),
+		argv(argv)
+	{};
+
+	int run();
+};
+
+};

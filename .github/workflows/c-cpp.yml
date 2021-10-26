@@ -15,7 +15,7 @@ jobs:
     - uses: ammaraskar/gcc-problem-matcher@master
 
     - name: deps
-      run: sudo apt install g++-10 bash-completion catch2
+      run: sudo apt install g++-10 bash-completion
 
     - name: configure
       run: cmake

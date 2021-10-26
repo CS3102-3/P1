@@ -25,9 +25,10 @@ project(p1
 # Without this, paths are not relative in the sources list
 cmake_policy(SET CMP0076 NEW)
 
-include(GNUInstallDirs)
-include(FindPkgConfig)
+Include(FetchContent)
 include(CPack)
+include(FindPkgConfig)
+include(GNUInstallDirs)
 
 # The program itself
 add_executable(${PROJECT_NAME})
@@ -51,20 +52,32 @@ add_subdirectory(pkg) # Packaging
 #		libfoo2
 #)
 
-# Header only libraries
-pkg_check_modules(header_only
-	REQUIRED IMPORTED_TARGET
-		catch2
+FetchContent_Declare(
+	Catch2
+	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+	GIT_TAG        v3.0.0-preview3
 )
+
+FetchContent_MakeAvailable(Catch2)
+
+
+#add_executable(tests test.cpp)
+#target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+
+# Header only libraries
+#pkg_check_modules(header_only
+#	REQUIRED IMPORTED_TARGET
+#		catch2
+#)
 
 # Linking
-target_link_libraries(${PROJECT_NAME}
+#target_link_libraries(${PROJECT_NAME}
 #	PRIVATE
 #		PkgConfig::shared
-
-	INTERFACE
-		PkgConfig::header_only
-)
+#
+#	INTERFACE
+#		PkgConfig::header_only
+#)
 
 # Default flags
 if(UNIX)

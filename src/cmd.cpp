@@ -23,10 +23,10 @@
 void utec::cmd::usage(int exit_code) const
 {
 	std::cout
-		<< "Usage: p1 [-i|-s] [x1 y1 x2 y2 | FILES...]\n"
-		<< "\t-h, --help               Show this help\n"
-		<< "\t-i, --index CSV...       Index into the Rtree\n"
-		<< "\t-s, --search x1 y1 x2 y2 Range search\n"
+		<< "Usage: p1 [-iGEOJSON FILES... | -sGEOJSON]\n"
+		<< "\t-h, --help                 Show this help\n"
+		<< "\t-i, --index=GEOJSON CSV... Index into the Rtree\n"
+		<< "\t-s, --search=GEOJSON       Range search\n"
 	;
 
 	exit(exit_code);
@@ -39,12 +39,13 @@ int utec::cmd::run()
 
 	int c;
 
-	static const char shortopts[] = "his";
+	static const char shortopts[] = "hi:s:";
 	static const option options[] =
 	{
-		{"help",   no_argument, nullptr, 'h'},
-		{"index",  no_argument, nullptr, 'i'},
-		{"search", no_argument, nullptr, 's'},
+		{"help",   no_argument,       nullptr, 'h'},
+		{"index",  required_argument, nullptr, 'i'},
+		{"search", required_argument, nullptr, 's'},
+		{nullptr,  0,                 nullptr, 0},
 	};
 
 	while((c = getopt_long(argc, argv, shortopts, options, nullptr)) != -1)
@@ -55,12 +56,15 @@ int utec::cmd::run()
 				usage(EXIT_SUCCESS);
 
 			case 'i':
-				std::cout << "Index TODO\n";
+				std::cout << "Index " << optarg << " TODO\n";
 				break;
 
 			case 's':
-				std::cout << "Search TODO\n";
+				std::cout << "Search " << optarg << " TODO\n";
 				break;
+
+			case '?':
+				return EXIT_FAILURE;
 
 			default:
 				usage(EXIT_FAILURE);

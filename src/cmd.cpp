@@ -23,7 +23,7 @@
 void utec::cmd::usage(int exit_code) const
 {
 	std::cout
-		<< "Usage: p1 [-iGEOJSON FILES... | -sGEOJSON]\n"
+		<< "Usage: p1 [-iGEOJSON CSV... | -sGEOJSON]\n"
 		<< "\t-h, --help                 Show this help\n"
 		<< "\t-i, --index=GEOJSON CSV... Index into the Rtree\n"
 		<< "\t-s, --search=GEOJSON       Range search\n"

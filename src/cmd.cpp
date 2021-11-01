@@ -23,9 +23,9 @@
 void utec::cmd::usage(int exit_code) const
 {
 	std::cout
-		<< "Usage: p1 [-iGEOJSON CSV... | -sGEOJSON]\n"
+		<< "Usage: p1 [-i CSV... | -sGEOJSON]\n"
 		<< "\t-h, --help                 Show this help\n"
-		<< "\t-i, --index=GEOJSON CSV... Index into the Rtree\n"
+		<< "\t-i, --index CSV...         Index into the Rtree\n"
 		<< "\t-s, --search=GEOJSON       Range search\n"
 	;
 
@@ -39,11 +39,11 @@ int utec::cmd::run()
 
 	int c;
 
-	static const char shortopts[] = "hi:s:";
+	static const char shortopts[] = "his:";
 	static const option options[] =
 	{
 		{"help",   no_argument,       nullptr, 'h'},
-		{"index",  required_argument, nullptr, 'i'},
+		{"index",  no_argument,       nullptr, 'i'},
 		{"search", required_argument, nullptr, 's'},
 		{nullptr,  0,                 nullptr, 0},
 	};
@@ -56,7 +56,7 @@ int utec::cmd::run()
 				usage(EXIT_SUCCESS);
 
 			case 'i':
-				std::cout << "Index " << optarg << " TODO\n";
+				std::cout << "Index TODO\n";
 				break;
 
 			case 's':

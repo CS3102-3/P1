@@ -71,5 +71,10 @@ int utec::cmd::run()
 		}
 	}
 
+	for(int i = optind; i < argc; i++)
+	{
+		std::cout << argv[i] << '\n';
+	}
+
 	return EXIT_SUCCESS;
 }

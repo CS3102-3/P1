@@ -78,3 +78,23 @@ jobs:
       with:
         name: arch_package
         path: pkg/arch/*.pkg.tar.*
+
+  mac:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: deps
+      run: brew install cmake bash-completion@2
+
+    - name: configure
+      run: CXXFLAGS="-Wall -Wextra" cmake
+        -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
+        -B build
+
+    - name: build
+      run: |
+          # https://github.com/memkind/memkind/issues/33#issuecomment-540614162
+          export MAKEFLAGS=-j$(sysctl -n hw.logicalcpu)
+          cmake --build build

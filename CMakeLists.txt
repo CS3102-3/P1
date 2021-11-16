@@ -90,14 +90,16 @@ if(UNIX)
 endif()
 
 # Bash completion
-file(WRITE ${CMAKE_BINARY_DIR}/bash-completion/${PROJECT_NAME}
-	"complete -F _longopt ${PROJECT_NAME}"
-)
+if(BASH_COMPLETION_FOUND)
+	file(WRITE ${CMAKE_BINARY_DIR}/bash-completion/${PROJECT_NAME}
+		"complete -F _longopt ${PROJECT_NAME}"
+	)
 
-install(FILES
-	${CMAKE_BINARY_DIR}/bash-completion/${PROJECT_NAME}
-	DESTINATION ${BASH_COMPLETION_COMPLETIONSDIR}/
-)
+	install(FILES
+		${CMAKE_BINARY_DIR}/bash-completion/${PROJECT_NAME}
+		DESTINATION ${BASH_COMPLETION_COMPLETIONSDIR}/
+	)
+endif()
 
 # Install target
 install(TARGETS ${PROJECT_NAME}

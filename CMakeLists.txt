@@ -41,6 +41,7 @@ set_target_properties(${PROJECT_NAME}
 
 # Packages
 find_package(bash-completion)
+find_package(RapidJSON REQUIRED)
 
 add_subdirectory(src) # Sources list
 add_subdirectory(pkg) # Packaging
@@ -52,6 +53,12 @@ add_subdirectory(pkg) # Packaging
 #		libfoo2
 #)
 
+## Header only libraries
+#pkg_check_modules(header_only
+#	REQUIRED IMPORTED_TARGET
+#		catch2
+#)
+
 FetchContent_Declare(
 	Catch2
 	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
@@ -60,24 +67,27 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-
 #add_executable(tests test.cpp)
 #target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 
-# Header only libraries
-pkg_check_modules(header_only
-	REQUIRED IMPORTED_TARGET
-		#catch2
-		RapidJSON
-)
-
-# Linking
-target_link_libraries(${PROJECT_NAME}
+## Linking
+#target_link_libraries(${PROJECT_NAME}
 #	PRIVATE
 #		PkgConfig::shared
+#
+#	INTERFACE
+#		PkgConfig::header_only
+#)
 
-	INTERFACE
-		PkgConfig::header_only
+# Headers
+target_include_directories(${PROJECT_NAME}
+	PRIVATE
+		${RAPIDJSON_INCLUDE_DIRS}
+)
+
+target_compile_definitions(${PROJECT_NAME}
+	PRIVATE
+		RAPIDJSON_HAS_STDSTRING=1
 )
 
 # Default flags

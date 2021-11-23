@@ -15,7 +15,7 @@ jobs:
     - uses: ammaraskar/gcc-problem-matcher@master
 
     - name: deps
-      run: sudo apt install g++-10 bash-completion rapidjson
+      run: sudo apt install g++-10 bash-completion rapidjson-dev
 
     - name: configure
       run: cmake
@@ -86,7 +86,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: deps
-      run: brew install cmake bash-completion@2 rapidjson pkg-config
+      run: brew install cmake bash-completion@2 rapidjson
 
     - name: configure
       run: CXXFLAGS="-Wall -Wextra" cmake

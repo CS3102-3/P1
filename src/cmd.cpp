@@ -56,11 +56,12 @@ int utec::cmd::run()
 				usage(EXIT_SUCCESS);
 
 			case 'i':
-				std::cout << "Index TODO\n";
+				action = action_type::index;
 				break;
 
 			case 's':
-				std::cout << "Search " << optarg << " TODO\n";
+				action = action_type::search;
+				query_path = optarg;
 				break;
 
 			case '?':
@@ -72,8 +73,17 @@ int utec::cmd::run()
 	}
 
 	for(int i = optind; i < argc; i++)
+		csv_paths.push_back(argv[i]);
+
+	switch(action)
 	{
-		std::cout << argv[i] << '\n';
+		case action_type::index:
+			// TODO
+			break;
+
+		case action_type::search:
+			// TODO
+			break;
 	}
 
 	return EXIT_SUCCESS;

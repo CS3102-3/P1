@@ -14,6 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <vector>
+#include <string>
+
 #pragma once
 
 namespace utec
@@ -22,8 +25,18 @@ namespace utec
 class cmd
 {
 private:
+	enum class action_type
+	{
+		index,
+		search
+	};
+
 	int argc;
 	char** argv;
+
+	action_type action;
+	std::vector<std::string> csv_paths;
+	std::string query_path;
 
 	[[ noreturn ]]
 	void usage(int exit_code) const;

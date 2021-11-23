@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <cstdio>
 #include <cstdlib>
 #include <getopt.h>
 #include <iostream>
@@ -96,7 +97,16 @@ int utec::cmd::index()
 
 int utec::cmd::search()
 {
+	FILE* query = fopen(query_path.c_str(), "r");
+
+	if(query == nullptr)
+	{
+		perror(query_path.c_str());
+		return EXIT_SUCCESS;
+	}
+
 	// TODO
 
-	return EXIT_FAILURE;
+	fclose(query);
+	return EXIT_SUCCESS;
 }

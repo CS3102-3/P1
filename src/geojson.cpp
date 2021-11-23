@@ -15,3 +15,8 @@
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "geojson.hpp"
+
+
+utec::iterative_parser::iterative_parser(FILE* file):
+	file(file)
+{};

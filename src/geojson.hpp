@@ -20,4 +20,14 @@
 
 namespace utec
 {
+
+class iterative_parser
+{
+private:
+	FILE* file;
+
+public:
+	iterative_parser(FILE* file);
+};
+
 };

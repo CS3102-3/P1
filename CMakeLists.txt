@@ -65,19 +65,20 @@ FetchContent_MakeAvailable(Catch2)
 #target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
 
 # Header only libraries
-#pkg_check_modules(header_only
-#	REQUIRED IMPORTED_TARGET
-#		catch2
-#)
+pkg_check_modules(header_only
+	REQUIRED IMPORTED_TARGET
+		#catch2
+		RapidJSON
+)
 
 # Linking
-#target_link_libraries(${PROJECT_NAME}
+target_link_libraries(${PROJECT_NAME}
 #	PRIVATE
 #		PkgConfig::shared
-#
-#	INTERFACE
-#		PkgConfig::header_only
-#)
+
+	INTERFACE
+		PkgConfig::header_only
+)
 
 # Default flags
 if(UNIX)

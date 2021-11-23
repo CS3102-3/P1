@@ -17,7 +17,5 @@
 target_sources(${PROJECT_NAME}
 	PRIVATE
 		cmd.cpp
-		index.cpp
 		main.cpp
-		search.cpp
 )

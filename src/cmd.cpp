@@ -19,8 +19,6 @@
 #include <iostream>
 
 #include "cmd.hpp"
-#include "search.hpp"
-#include "index.hpp"
 
 void utec::cmd::usage(int exit_code) const
 {
@@ -80,11 +78,25 @@ int utec::cmd::run()
 	switch(action)
 	{
 		case action_type::index:
-			return index(csv_paths);
+			return index();
 
 		case action_type::search:
-			return search(query_path);
+			return search();
 	}
+
+	return EXIT_FAILURE;
+}
+
+int utec::cmd::index()
+{
+	// TODO
+
+	return EXIT_FAILURE;
+}
+
+int utec::cmd::search()
+{
+	// TODO
 
 	return EXIT_FAILURE;
 }

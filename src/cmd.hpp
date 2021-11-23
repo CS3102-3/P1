@@ -41,6 +41,9 @@ private:
 	[[ noreturn ]]
 	void usage(int exit_code) const;
 
+	int index();
+	int search();
+
 public:
 	cmd(int argc, char** argv):
 		argc(argc),

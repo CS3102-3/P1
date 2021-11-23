@@ -102,7 +102,7 @@ int utec::cmd::search()
 	if(query == nullptr)
 	{
 		perror(query_path.c_str());
-		return EXIT_SUCCESS;
+		return EXIT_FAILURE;
 	}
 
 	// TODO

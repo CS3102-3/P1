@@ -80,8 +80,27 @@ bool utec::geojson_parser::StartObject()
 
 bool utec::geojson_parser::EndObject(rapidjson::SizeType)
 {
-	// TODO
-	std::cerr << "EndObject\n";
+	switch(state)
+	{
+		case state_t::in_json:
+			state = state_t::after_json;
+			break;
+
+		case state_t::in_feature:
+			state = state_t::in_features;
+			break;
+
+		case state_t::in_properties:
+			state = state_t::in_feature;
+			break;
+
+		case state_t::in_geometry:
+			state = state_t::in_feature;
+			break;
+
+		default:
+			return false;
+	}
 	return true;
 }
 

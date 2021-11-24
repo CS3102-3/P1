@@ -77,7 +77,10 @@ private:
 
 	std::function<bool(const bounding_box& box)> query_function;
 
-	void get_next_box();
+	int inserted_scalars;
+	void reset_box();
+	void add_latitude(double latitude);
+	void add_longitude(double longitude);
 
 public:
 	geojson_parser(FILE* file, std::function<bool(const bounding_box& box)> query_function);

@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <cmath>
 #include <iostream>
 
 #include <rapidjson/error/en.h>
@@ -60,6 +61,7 @@ bool utec::geojson_parser::StartObject()
 
 		case state_t::in_features:
 			state = state_t::in_feature;
+			reset_box();
 			break;
 
 		case state_t::in_feature:
@@ -90,6 +92,7 @@ bool utec::geojson_parser::EndObject(rapidjson::SizeType)
 
 		case state_t::in_feature:
 			state = state_t::in_features;
+			query_function(box);
 			break;
 
 		case state_t::in_properties:
@@ -127,6 +130,7 @@ bool utec::geojson_parser::StartArray()
 
 		case state_t::in_coordinates2:
 			state = state_t::in_point;
+			inserted_scalars = 0;
 			break;
 
 		default:
@@ -200,12 +204,49 @@ bool utec::geojson_parser::String(const char* str, rapidjson::SizeType size, boo
 
 bool utec::geojson_parser::Double(double d)
 {
-	// TODO
-	std::cerr << "Double\n";
+	switch(state)
+	{
+		case state_t::in_point:
+			switch(inserted_scalars++)
+			{
+				case 0:
+					add_longitude(d);
+					break;
+
+				case 1:
+					add_latitude(d);
+					break;
+
+				default:
+					return false;
+			}
+			break;
+
+		default:
+			return false;
+	}
 	return true;
 }
 
 bool utec::geojson_parser::Default()
 {
 	return false;
+}
+
+void utec::geojson_parser::reset_box()
+{
+	box.min_c = {INFINITY, INFINITY};
+	box.max_c = {-INFINITY, -INFINITY};
+}
+
+void utec::geojson_parser::add_latitude(double latitude)
+{
+	box.min_c.latitude = std::min(box.min_c.latitude, latitude);
+	box.max_c.latitude = std::max(box.max_c.latitude, latitude);
+}
+
+void utec::geojson_parser::add_longitude(double longitude)
+{
+	box.min_c.longitude = std::min(box.min_c.longitude, longitude);
+	box.max_c.longitude = std::max(box.max_c.longitude, longitude);
 }

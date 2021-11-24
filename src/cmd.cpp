@@ -110,7 +110,12 @@ int utec::cmd::search()
 		[](const bounding_box& box) -> bool
 		{
 			// TODO
-			std::cerr << "box\n";
+			std::cerr
+				<< "min latitude: " << box.min_c.latitude << '\n'
+				<< "min longitude: " << box.min_c.longitude << '\n'
+				<< "max latitude: " << box.max_c.latitude << '\n'
+				<< "max longitude: " << box.max_c.longitude << '\n'
+			;
 
 			return false;
 		}

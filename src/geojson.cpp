@@ -92,7 +92,7 @@ bool utec::geojson_parser::EndObject(rapidjson::SizeType)
 
 		case state_t::in_feature:
 			state = state_t::in_features;
-			query_function(box);
+			_good &= query_function(box);
 			break;
 
 		case state_t::in_properties:

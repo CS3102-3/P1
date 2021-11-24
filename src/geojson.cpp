@@ -28,6 +28,8 @@ const utec::geojson_parser::t_map_t utec::geojson_parser::to_map =
 
 const utec::geojson_parser::t_map_t utec::geojson_parser::ta_map =
 {
+	{{state_t::in_json, "features"}, state_t::in_features},
+	{{state_t::in_geometry, "coordinates"}, state_t::in_coordinates},
 };
 
 utec::geojson_parser::geojson_parser(FILE* file, std::function<bool(const bounding_box& box)> query_function):
@@ -106,8 +108,30 @@ bool utec::geojson_parser::EndObject(rapidjson::SizeType)
 
 bool utec::geojson_parser::StartArray()
 {
-	// TODO
-	std::cerr << "StartArray\n";
+	switch(state)
+	{
+		case state_t::in_json:
+		case state_t::in_geometry:
+		{
+			auto it = ta_map.find({state, last_key});
+			if(it == ta_map.end())
+				return false;
+
+			state = it->second;
+			break;
+		}
+
+		case state_t::in_coordinates:
+			state = state_t::in_coordinates2;
+			break;
+
+		case state_t::in_coordinates2:
+			state = state_t::in_point;
+			break;
+
+		default:
+			return false;
+	}
 	return true;
 }
 

@@ -14,10 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <clocale>
+
 #include "cmd.hpp"
 
 int main(int argc, char** argv)
 {
+	setlocale(LC_ALL, "");
+
 	utec::cmd c(argc, argv);
 
 	return c.run();

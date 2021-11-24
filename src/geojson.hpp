@@ -18,6 +18,7 @@
 #include <functional>
 #include <iterator>
 #include <string_view>
+#include <map>
 
 #include <rapidjson/filereadstream.h>
 #include <rapidjson/reader.h>
@@ -50,11 +51,20 @@ private:
 		after_json,
 		in_features,
 		in_feature,
+		in_properties,
 		in_geometry,
 		in_coordinates,
 		in_coordinates2,
 		in_point
 	};
+
+	using t_map_t = std::map<std::pair<state_t, std::string_view>, state_t>;
+
+	/// Contains state x key -> state transitions for objects.
+	static const t_map_t to_map;
+
+	/// Contains state x key -> state transitions for arrays.
+	static const t_map_t ta_map;
 
 	char                      buffer[PIPE_BUF];
 	rapidjson::Reader         reader;

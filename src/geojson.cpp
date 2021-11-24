@@ -20,6 +20,16 @@
 
 #include "geojson.hpp"
 
+const utec::geojson_parser::t_map_t utec::geojson_parser::to_map =
+{
+	{{state_t::in_feature, "properties"}, state_t::in_properties},
+	{{state_t::in_feature, "geometry"}, state_t::in_geometry},
+};
+
+const utec::geojson_parser::t_map_t utec::geojson_parser::ta_map =
+{
+};
+
 utec::geojson_parser::geojson_parser(FILE* file, std::function<bool(const bounding_box& box)> query_function):
 	reader(),
 	frs(file, buffer, sizeof(buffer)),
@@ -35,13 +45,36 @@ utec::geojson_parser::geojson_parser(FILE* file, std::function<bool(const boundi
 
 bool utec::geojson_parser::good() const
 {
-	return _good;
+	return _good && state == state_t::after_json;
 }
 
 bool utec::geojson_parser::StartObject()
 {
-	// TODO
-	std::cerr << "StartObject\n";
+	switch(state)
+	{
+		case state_t::before_json:
+			state = state_t::in_json;
+			break;
+
+		case state_t::in_features:
+			state = state_t::in_feature;
+			break;
+
+		case state_t::in_feature:
+		{
+			auto it = to_map.find({state, last_key});
+			if(it == to_map.end())
+				return false;
+
+			state = it->second;
+
+			break;
+		}
+
+		default:
+			return false;
+	}
+
 	return true;
 }
 

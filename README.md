@@ -1,4 +1,4 @@
-# Proyecto 3
+# Proyecto 1
 
 ## Dependencias
 
@@ -10,7 +10,7 @@
 ## Build
 ``` bash
 git clone https://github.com/CS3102-3/P1
-cd hello
+cd P1
 
 mkdir -p build
 cd build

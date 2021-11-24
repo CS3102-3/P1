@@ -14,11 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <cstdio>
 #include <cstdlib>
 #include <getopt.h>
 #include <iostream>
 
 #include "cmd.hpp"
+#include "geojson.hpp"
 
 void utec::cmd::usage(int exit_code) const
 {
@@ -96,7 +98,29 @@ int utec::cmd::index()
 
 int utec::cmd::search()
 {
-	// TODO
+	FILE* query = fopen(query_path.c_str(), "r");
 
-	return EXIT_FAILURE;
+	if(query == nullptr)
+	{
+		perror(query_path.c_str());
+		return EXIT_FAILURE;
+	}
+
+	geojson_parser parser(query,
+		[](const bounding_box& box) -> bool
+		{
+			// TODO
+			std::cerr
+				<< "min latitude: " << box.min_c.latitude << '\n'
+				<< "min longitude: " << box.min_c.longitude << '\n'
+				<< "max latitude: " << box.max_c.latitude << '\n'
+				<< "max longitude: " << box.max_c.longitude << '\n'
+			;
+
+			return false;
+		}
+	);
+
+	fclose(query);
+	return parser.good()? EXIT_SUCCESS : EXIT_FAILURE;
 }

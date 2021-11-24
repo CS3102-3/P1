@@ -5,6 +5,7 @@
 * `bash-completion`
 * `catch2`
 * `cmake`
+* `rapidjson`
 
 ## Build
 ``` bash

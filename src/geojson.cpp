@@ -137,8 +137,27 @@ bool utec::geojson_parser::StartArray()
 
 bool utec::geojson_parser::EndArray(rapidjson::SizeType)
 {
-	// TODO
-	std::cerr << "EndArray\n";
+	switch(state)
+	{
+		case state_t::in_features:
+			state = state_t::in_json;
+			break;
+
+		case state_t::in_coordinates:
+			state = state_t::in_geometry;
+			break;
+
+		case state_t::in_coordinates2:
+			state = state_t::in_coordinates;
+			break;
+
+		case state_t::in_point:
+			state = state_t::in_coordinates2;
+			break;
+
+		default:
+			return false;
+	}
 	return true;
 }
 

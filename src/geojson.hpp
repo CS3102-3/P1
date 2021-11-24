@@ -17,6 +17,7 @@
 #include <climits>
 #include <functional>
 #include <iterator>
+#include <string_view>
 
 #include <rapidjson/filereadstream.h>
 #include <rapidjson/reader.h>
@@ -45,17 +46,24 @@ private:
 	enum class state_t
 	{
 		before_json,
+		in_json,
 		after_json,
-		after_feature
+		in_features,
+		in_feature,
+		in_geometry,
+		in_coordinates,
+		in_coordinates2,
+		in_point
 	};
 
 	char                      buffer[PIPE_BUF];
 	rapidjson::Reader         reader;
 	rapidjson::FileReadStream frs;
+	std::string_view          last_key;
 
 	bounding_box box;
-	state_t state;
-	bool _good = true;
+	state_t      state = state_t::before_json;
+	bool         _good = true;
 
 	std::function<bool(const bounding_box& box)> query_function;
 
@@ -71,7 +79,7 @@ public:
 	bool EndObject(rapidjson::SizeType);
 	bool StartArray();
 	bool EndArray(rapidjson::SizeType);
-	bool Key(const char* str, rapidjson::SizeType, bool);
+	bool Key(const char* str, rapidjson::SizeType size, bool);
 	bool String(const char* str, rapidjson::SizeType, bool);
 	bool Double(double d);
 

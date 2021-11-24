@@ -66,10 +66,9 @@ bool utec::geojson_parser::EndArray(rapidjson::SizeType)
 	return true;
 }
 
-bool utec::geojson_parser::Key(const char* str, rapidjson::SizeType, bool)
+bool utec::geojson_parser::Key(const char* str, rapidjson::SizeType size, bool)
 {
-	// TODO
-	std::cerr << "Key\n";
+	last_key = std::string_view(str, size);
 	return true;
 }
 

@@ -36,7 +36,7 @@ add_executable(${PROJECT_NAME})
 # C++ version
 set_target_properties(${PROJECT_NAME}
 	PROPERTIES
-		CXX_STANDARD 17
+		CXX_STANDARD 20
 )
 
 # Packages

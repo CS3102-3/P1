@@ -20,6 +20,7 @@
 #include <iostream>
 
 #include "cmd.hpp"
+#include "geojson.hpp"
 
 void utec::cmd::usage(int exit_code) const
 {
@@ -105,6 +106,9 @@ int utec::cmd::search()
 		return EXIT_FAILURE;
 	}
 
+	for(const auto& box: iterative_parser(query))
+	{
+	}
 	// TODO
 
 	fclose(query);

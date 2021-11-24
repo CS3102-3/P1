@@ -16,7 +16,19 @@
 
 #include "geojson.hpp"
 
-
 utec::iterative_parser::iterative_parser(FILE* file):
 	file(file)
 {};
+
+void utec::iterative_parser::iterator::get_next_box()
+{
+	// TODO
+	state = state_t::after_json;
+}
+
+utec::iterative_parser::iterator::iterator(iterative_parser& ip):
+	state(state_t::before_json),
+	ip(ip)
+{
+	get_next_box();
+};

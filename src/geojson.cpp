@@ -167,10 +167,34 @@ bool utec::geojson_parser::Key(const char* str, rapidjson::SizeType size, bool)
 	return true;
 }
 
-bool utec::geojson_parser::String(const char* str, rapidjson::SizeType, bool)
+bool utec::geojson_parser::String(const char* str, rapidjson::SizeType size, bool)
 {
-	// TODO
-	std::cerr << "String\n";
+	std::string_view str_v(str, size);
+
+	switch(state)
+	{
+		case state_t::in_json:
+			if(last_key == "type")
+				if(str_v != "FeatureCollection")
+					return false;
+			break;
+
+		case state_t::in_feature:
+			if(last_key == "type")
+				if(str_v != "Feature")
+					return false;
+			break;
+
+		case state_t::in_geometry:
+			if(last_key == "type")
+				if(str_v != "Polygon")
+					return false;
+			break;
+
+		default:
+			return false;
+	}
+
 	return true;
 }
 

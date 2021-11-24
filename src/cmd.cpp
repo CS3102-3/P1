@@ -106,11 +106,15 @@ int utec::cmd::search()
 		return EXIT_FAILURE;
 	}
 
-	for(const auto& box: iterative_parser(query))
-	{
-	}
-	// TODO
+	geojson_parser parser(query,
+		[](const bounding_box& box) -> bool
+		{
+			std::cout << "box\n";
+
+			return false;
+		}
+	);
 
 	fclose(query);
-	return EXIT_SUCCESS;
+	return parser.good()? EXIT_SUCCESS : EXIT_FAILURE;
 }

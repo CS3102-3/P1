@@ -14,9 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <climits>
+#include <functional>
 #include <iterator>
 
 #include <rapidjson/filereadstream.h>
+#include <rapidjson/reader.h>
 
 #pragma once
 
@@ -35,79 +38,36 @@ struct bounding_box
 	coordinate max_c;
 };
 
-class iterative_parser
+class geojson_parser:
+	public rapidjson::BaseReaderHandler<rapidjson::UTF8<>, geojson_parser>
 {
 private:
-	FILE* file;
-
-public:
-	class iterator
+	enum class state_t
 	{
-	private:
-		enum class state_t
-		{
-			before_json,
-			after_json
-		};
-
-		bounding_box box;
-		state_t state;
-		iterative_parser& ip;
-
-		friend class iterative_parser;
-
-		void get_next_box();
-
-	public:
-		using iterator_category = std::forward_iterator_tag;
-		using difference_type   = std::ptrdiff_t;
-		using value_type        = bounding_box;
-		using pointer           = value_type*;
-		using reference         = value_type&;
-
-		iterator(iterative_parser& ip);
-
-		reference operator*()
-		{
-			return box;
-		}
-
-		pointer operator->()
-		{
-			return &box;
-		}
-
-		iterator& operator++()
-		{
-			get_next_box();
-			return *this;
-		}
-
-		friend bool operator==(const iterator& l, const iterator& r)
-		{
-			return l.state == r.state;
-		}
-
-		friend bool operator!=(const iterator& l, const iterator& r)
-		{
-			return !(l == r);
-		}
+		before_json,
+		after_json,
+		after_feature
 	};
 
-	iterator begin()
-	{
-		return iterator(*this);
-	}
+	char                      buffer[PIPE_BUF];
+	rapidjson::Reader         reader;
+	rapidjson::FileReadStream frs;
 
-	iterator end()
-	{
-		auto it = iterator(*this);
-		it.state = iterator::state_t::after_json;
+	bounding_box box;
+	state_t state;
+	bool _good = true;
 
-		return it;
-	}
+	std::function<bool(const bounding_box& box)> query_function;
 
-	iterative_parser(FILE* file);
+	void get_next_box();
+
+public:
+	geojson_parser(FILE* file, std::function<bool(const bounding_box& box)> query_function);
+
+	bool good() const;
+
+	// Json handlers
+	bool Default();
 };
 
 };

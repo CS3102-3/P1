@@ -109,7 +109,8 @@ int utec::cmd::search()
 	geojson_parser parser(query,
 		[](const bounding_box& box) -> bool
 		{
-			std::cout << "box\n";
+			// TODO
+			std::cerr << "box\n";
 
 			return false;
 		}

@@ -38,12 +38,56 @@ bool utec::geojson_parser::good() const
 	return _good;
 }
 
+bool utec::geojson_parser::StartObject()
+{
+	// TODO
+	std::cerr << "StartObject\n";
+	return true;
+}
+
+bool utec::geojson_parser::EndObject(rapidjson::SizeType)
+{
+	// TODO
+	std::cerr << "EndObject\n";
+	return true;
+}
+
+bool utec::geojson_parser::StartArray()
+{
+	// TODO
+	std::cerr << "StartArray\n";
+	return true;
+}
+
+bool utec::geojson_parser::EndArray(rapidjson::SizeType)
+{
+	// TODO
+	std::cerr << "EndArray\n";
+	return true;
+}
+
+bool utec::geojson_parser::Key(const char* str, rapidjson::SizeType, bool)
+{
+	// TODO
+	std::cerr << "Key\n";
+	return true;
+}
+
+bool utec::geojson_parser::String(const char* str, rapidjson::SizeType, bool)
+{
+	// TODO
+	std::cerr << "String\n";
+	return true;
+}
+
+bool utec::geojson_parser::Double(double d)
+{
+	// TODO
+	std::cerr << "Double\n";
+	return true;
+}
+
 bool utec::geojson_parser::Default()
 {
-	state = state_t::after_feature;
-	// TODO
-
-	_good &= query_function(box);
-
-	return true;
+	return false;
 }

@@ -67,6 +67,14 @@ public:
 	bool good() const;
 
 	// Json handlers
+	bool StartObject();
+	bool EndObject(rapidjson::SizeType);
+	bool StartArray();
+	bool EndArray(rapidjson::SizeType);
+	bool Key(const char* str, rapidjson::SizeType, bool);
+	bool String(const char* str, rapidjson::SizeType, bool);
+	bool Double(double d);
+
 	bool Default();
 };
 

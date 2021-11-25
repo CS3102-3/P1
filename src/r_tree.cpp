@@ -14,43 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
+#include "r_tree.hpp"
 
-#include <vector>
-#include <string>
+utec::r_tree::r_tree(){};
 
-namespace utec
+std::istream& utec::operator>>(std::istream& is, r_tree& rt)
 {
+	// TODO
 
-class cmd
+	return is;
+}
+
+std::ostream& utec::operator<<(std::ostream& os, const r_tree& rt)
 {
-private:
-	enum class action_type
-	{
-		index,
-		search
-	};
+	// TODO
 
-	int argc;
-	char** argv;
-
-	action_type action;
-	std::vector<std::string> csv_paths;
-	std::string query_path;
-
-	[[ noreturn ]]
-	void usage(int exit_code) const;
-
-	int index();
-	int search();
-
-public:
-	cmd(int argc, char** argv):
-		argc(argc),
-		argv(argv)
-	{};
-
-	int run();
-};
-
-};
+	return os;
+}

@@ -19,4 +19,5 @@ target_sources(${PROJECT_NAME}
 		cmd.cpp
 		geojson.cpp
 		main.cpp
+		r_tree.cpp
 )

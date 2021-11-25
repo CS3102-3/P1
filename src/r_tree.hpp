@@ -16,41 +16,23 @@
 
 #pragma once
 
-#include <vector>
-#include <string>
+#include <iostream>
 
 namespace utec
 {
 
-class cmd
+class r_tree
 {
 private:
-	enum class action_type
-	{
-		index,
-		search
-	};
-
-	int argc;
-	char** argv;
-
-	action_type action;
-	std::vector<std::string> csv_paths;
-	std::string query_path;
-
-	[[ noreturn ]]
-	void usage(int exit_code) const;
-
-	int index();
-	int search();
 
 public:
-	cmd(int argc, char** argv):
-		argc(argc),
-		argv(argv)
-	{};
+	r_tree();
 
-	int run();
+	friend std::istream& operator>>(std::istream& is, r_tree& rt);
+	friend std::ostream& operator<<(std::ostream& os, const r_tree& rt);
 };
+
+std::istream& operator>>(std::istream& is, r_tree& rt);
+std::ostream& operator<<(std::ostream& os, const r_tree& rt);
 
 };

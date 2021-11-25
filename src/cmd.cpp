@@ -21,6 +21,7 @@
 
 #include "cmd.hpp"
 #include "geojson.hpp"
+#include "r_tree.hpp"
 
 void utec::cmd::usage(int exit_code) const
 {

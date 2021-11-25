@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
+#pragma once
+
 #include <climits>
 #include <functional>
 #include <iterator>
@@ -22,8 +24,6 @@
 
 #include <rapidjson/filereadstream.h>
 #include <rapidjson/reader.h>
-
-#pragma once
 
 namespace utec
 {

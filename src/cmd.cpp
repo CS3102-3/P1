@@ -16,10 +16,11 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <fstream>
 #include <getopt.h>
 #include <iostream>
-#include <wordexp.h>
 #include <system_error>
+#include <wordexp.h>
 
 #include "cmd.hpp"
 #include "geojson.hpp"
@@ -97,9 +98,21 @@ int utec::cmd::run()
 
 int utec::cmd::index()
 {
+	r_tree rt;
+
 	// TODO
 
-	return EXIT_FAILURE;
+	std::ofstream ofs(r_tree_path, std::ios::binary);
+
+	if(!ofs.is_open())
+	{
+		perror(r_tree_path.string().c_str());
+		return EXIT_FAILURE;
+	}
+
+	ofs << rt;
+
+	return EXIT_SUCCESS;
 }
 
 int utec::cmd::search()

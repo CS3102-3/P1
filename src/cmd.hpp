@@ -53,6 +53,8 @@ private:
 	/// The path of the r-tree.
 	static fs::path r_tree_path;
 
+	static bool create_data_dir();
+
 public:
 	cmd(int argc, char** argv):
 		argc(argc),

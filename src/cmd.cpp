@@ -19,6 +19,7 @@
 #include <getopt.h>
 #include <iostream>
 #include <wordexp.h>
+#include <system_error>
 
 #include "cmd.hpp"
 #include "geojson.hpp"
@@ -79,6 +80,9 @@ int utec::cmd::run()
 	for(int i = optind; i < argc; i++)
 		csv_paths.push_back(argv[i]);
 
+	if(!create_data_dir())
+		return EXIT_FAILURE;
+
 	switch(action)
 	{
 		case action_type::index:
@@ -134,10 +138,25 @@ fs::path utec::cmd::data_path = []()
 	int r = wordexp("\"${XDG_DATA_HOME:-$HOME/.local/share}/p1\"", &p, WRDE_NOCMD);
 	assert(r == 0 && p.we_wordc == 1);
 
-	std::filesystem::path path(p.we_wordv[0]);
+	fs::path path(p.we_wordv[0]);
 
 	wordfree(&p);
 	return path;
 }();
 
 fs::path utec::cmd::r_tree_path = data_path / "r_tree";
+
+bool utec::cmd::create_data_dir()
+{
+	std::error_code ec;
+
+	fs::create_directories(data_path, ec);
+
+	if(ec)
+	{
+		perror(data_path.string().c_str());
+		return false;
+	}
+
+	return true;
+}

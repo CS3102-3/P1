@@ -125,8 +125,20 @@ int utec::cmd::search()
 		return EXIT_FAILURE;
 	}
 
+	std::ifstream ifs(r_tree_path, std::ios::binary);
+
+	if(!ifs.is_open())
+	{
+		perror(r_tree_path.string().c_str());
+		return EXIT_FAILURE;
+	}
+
+	r_tree rt;
+
+	ifs >> rt;
+
 	geojson_parser parser(query,
-		[](const bounding_box& box) -> bool
+		[&rt](const bounding_box& box) -> bool
 		{
 			// TODO
 			std::cerr

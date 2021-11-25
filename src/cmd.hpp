@@ -48,10 +48,10 @@ private:
 	int search();
 
 	/// The path of the directory where the r-tree will be saved.
-	static fs::path data_path;
+	static const fs::path data_path;
 
 	/// The path of the r-tree.
-	static fs::path r_tree_path;
+	static const fs::path r_tree_path;
 
 	static bool create_data_dir();
 

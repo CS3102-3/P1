@@ -131,7 +131,7 @@ int utec::cmd::search()
 	return parser.good()? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
-fs::path utec::cmd::data_path = []()
+const fs::path utec::cmd::data_path = []()
 {
 	wordexp_t p;
 
@@ -144,7 +144,7 @@ fs::path utec::cmd::data_path = []()
 	return path;
 }();
 
-fs::path utec::cmd::r_tree_path = data_path / "r_tree";
+const fs::path utec::cmd::r_tree_path = data_path / "r_tree";
 
 bool utec::cmd::create_data_dir()
 {

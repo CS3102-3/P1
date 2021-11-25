@@ -18,6 +18,7 @@
 #include <cstdlib>
 #include <getopt.h>
 #include <iostream>
+#include <wordexp.h>
 
 #include "cmd.hpp"
 #include "geojson.hpp"
@@ -125,3 +126,18 @@ int utec::cmd::search()
 	fclose(query);
 	return parser.good()? EXIT_SUCCESS : EXIT_FAILURE;
 }
+
+fs::path utec::cmd::data_path = []()
+{
+	wordexp_t p;
+
+	int r = wordexp("\"${XDG_DATA_HOME:-$HOME/.local/share}/p1\"", &p, WRDE_NOCMD);
+	assert(r == 0 && p.we_wordc == 1);
+
+	std::filesystem::path path(p.we_wordv[0]);
+
+	wordfree(&p);
+	return path;
+}();
+
+fs::path utec::cmd::r_tree_path = data_path / "r_tree";

@@ -17,7 +17,10 @@
 #pragma once
 
 #include <vector>
+#include <filesystem>
 #include <string>
+
+namespace fs = std::filesystem;
 
 namespace utec
 {
@@ -43,6 +46,12 @@ private:
 
 	int index();
 	int search();
+
+	/// The path of the directory where the r-tree will be saved.
+	static fs::path data_path;
+
+	/// The path of the r-tree.
+	static fs::path r_tree_path;
 
 public:
 	cmd(int argc, char** argv):

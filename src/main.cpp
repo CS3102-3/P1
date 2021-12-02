@@ -21,6 +21,7 @@
 int main(int argc, char** argv)
 {
 	setlocale(LC_ALL, "");
+	setlocale(LC_NUMERIC, "C");
 
 	utec::cmd c(argc, argv);
 

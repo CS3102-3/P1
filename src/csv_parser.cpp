@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <charconv>
 #include <iostream>
 #include <sstream>
 
@@ -75,39 +74,12 @@ bool utec::csv_parser::iterator::read_csv_line()
 	{
 		if(i == longitude_i)
 		{
-			if(!parse_token(last_coordinate.longitude, token))
-				return false;
+			last_coordinate.longitude = std::stod(token);
 		}
 		else if(i == latitude_i)
 		{
-			if(!parse_token(last_coordinate.latitude, token))
-				return false;
+			last_coordinate.latitude = std::stod(token);
 		}
-	}
-
-	return true;
-}
-
-bool utec::csv_parser::iterator::parse_token(
-	double& value,
-	const std::string& token
-)
-{
-	auto [p, ec] = std::from_chars(
-		token.data(),
-		token.data() + token.size(),
-		value
-	);
-
-	if(ec != std::errc())
-	{
-		std::cerr
-			<< token
-			<< ": "
-			<< std::make_error_code(ec).message()
-			<< '\n'
-		;
-		return false;
 	}
 
 	return true;

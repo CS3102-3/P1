@@ -52,7 +52,6 @@ public:
 		bool try_next_file(const std::string& csv_path);
 		bool check_header();
 		bool read_csv_line();
-		bool parse_token(double& value, const std::string& token);
 		void get_next_tuple();
 
 	public:

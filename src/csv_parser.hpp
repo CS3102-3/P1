@@ -18,6 +18,7 @@
 
 #include <span>
 #include <string>
+#include <fstream>
 
 #include "geo_utils.hpp"
 
@@ -30,14 +31,12 @@ private:
 	std::span<std::string> csv_paths;
 
 public:
-
 	class iterator
 	{
 	private:
 		enum class state_t
 		{
 			before_csv,
-			before_header,
 			before_tuples,
 		};
 
@@ -46,6 +45,14 @@ public:
 		size_t      csv_index;
 		coordinate  last_coordinate;
 
+		std::ifstream csv_ifs;
+		size_t        latitude_i;
+		size_t        longitude_i;
+
+		bool try_next_file(const std::string& csv_path);
+		bool check_header();
+		bool read_csv_line();
+		bool parse_token(double& value, const std::string& token);
 		void get_next_tuple();
 
 	public:
@@ -59,7 +66,9 @@ public:
 			parent(parent),
 			state(state_t::before_csv),
 			csv_index(end ? parent.csv_paths.size() : 0)
-		{};
+		{
+			get_next_tuple();
+		};
 
 		reference operator*()
 		{

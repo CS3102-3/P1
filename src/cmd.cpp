@@ -104,7 +104,7 @@ int utec::cmd::index()
 	for(auto [lat, lon]: csv_parser(csv_paths))
 	{
 		// TODO
-		std::cerr << lat << ' ' << lon << '\n';
+		std::cout << lat << ' ' << lon << '\n';
 	}
 
 	std::ofstream ofs(r_tree_path, std::ios::binary);

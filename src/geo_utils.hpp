@@ -14,16 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <clocale>
+#pragma once
 
-#include "cmd.hpp"
-
-int main(int argc, char** argv)
+namespace utec
 {
-	setlocale(LC_ALL, "");
-	setlocale(LC_NUMERIC, "C");
 
-	utec::cmd c(argc, argv);
+struct coordinate
+{
+	double latitude;
+	double longitude;
+};
 
-	return c.run();
-}
+struct bounding_box
+{
+	coordinate min_c;
+	coordinate max_c;
+};
+
+};

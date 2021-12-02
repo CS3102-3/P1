@@ -23,6 +23,7 @@
 #include <wordexp.h>
 
 #include "cmd.hpp"
+#include "csv_parser.hpp"
 #include "geojson.hpp"
 #include "r_tree.hpp"
 
@@ -100,7 +101,11 @@ int utec::cmd::index()
 {
 	r_tree rt;
 
-	// TODO
+	for(auto [lat, lon]: csv_parser(csv_paths))
+	{
+		// TODO
+		std::cout << lat << ' ' << lon << '\n';
+	}
 
 	std::ofstream ofs(r_tree_path, std::ios::binary);
 

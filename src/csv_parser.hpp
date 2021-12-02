@@ -17,6 +17,9 @@
 #pragma once
 
 #include <span>
+#include <string>
+
+#include "geo_utils.hpp"
 
 namespace utec
 {
@@ -24,9 +27,80 @@ namespace utec
 class csv_parser
 {
 private:
+	std::span<std::string> csv_paths;
 
 public:
-	csv_parser();
+
+	class iterator
+	{
+	private:
+		enum class state_t
+		{
+			before_csv,
+			before_header,
+			before_tuples,
+		};
+
+		csv_parser& parent;
+		state_t     state;
+		size_t      csv_index;
+		coordinate  last_coordinate;
+
+		void get_next_tuple();
+
+	public:
+		using iterator_category = std::forward_iterator_tag;
+		using difference_type   = std::ptrdiff_t;
+		using value_type        = coordinate;
+		using pointer           = value_type*;
+		using reference         = value_type&;
+
+		iterator(csv_parser& parent, bool end):
+			parent(parent),
+			state(state_t::before_csv),
+			csv_index(end ? parent.csv_paths.size() : 0)
+		{};
+
+		reference operator*()
+		{
+			return last_coordinate;
+		}
+
+		pointer operator->()
+		{
+			return &last_coordinate;
+		}
+
+		iterator& operator++()
+		{
+			get_next_tuple();
+			return *this;
+		}
+
+		friend bool operator==(const iterator& l, const iterator& r)
+		{
+			return l.csv_index == r.csv_index && l.state == r.state;
+		}
+
+		friend bool operator!=(const iterator& l, const iterator& r)
+		{
+			return !(l == r);
+		}
+	};
+
+	iterator begin()
+	{
+		return {*this, false};
+	};
+
+	iterator end()
+	{
+		return {*this, true};
+	}
+
+	csv_parser(std::span<std::string> csv_paths):
+		csv_paths(csv_paths)
+	{};
 };
 
 };

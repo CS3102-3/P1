@@ -15,3 +15,7 @@
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "csv_parser.hpp"
+
+void utec::csv_parser::iterator::get_next_tuple()
+{
+}

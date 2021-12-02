@@ -25,20 +25,10 @@
 #include <rapidjson/filereadstream.h>
 #include <rapidjson/reader.h>
 
+#include "geo_utils.hpp"
+
 namespace utec
 {
-
-struct coordinate
-{
-	double latitude;
-	double longitude;
-};
-
-struct bounding_box
-{
-	coordinate min_c;
-	coordinate max_c;
-};
 
 class geojson_parser:
 	public rapidjson::BaseReaderHandler<rapidjson::UTF8<>, geojson_parser>

@@ -65,7 +65,14 @@ void utec::r_tree::_search(node* n, const bounding_box& box, std::vector<coordin
 
 void utec::r_tree::insert(const coordinate& coord)
 {
-	// TODO
+	if(root == nullptr)
+	{
+		root = new node({coord, coord});
+		root->points[root->size++] = coord;
+	}
+	else
+	{
+	}
 }
 
 std::vector<utec::coordinate> utec::r_tree::search(const bounding_box& box) const

@@ -18,6 +18,7 @@ target_sources(${PROJECT_NAME}
 	PRIVATE
 		cmd.cpp
 		csv_parser.cpp
+		geo_utils.cpp
 		geojson.cpp
 		main.cpp
 		r_tree.cpp

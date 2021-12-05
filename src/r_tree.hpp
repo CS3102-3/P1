@@ -28,13 +28,13 @@ namespace utec
 class r_tree
 {
 private:
+	static const size_t N = 10;
+
 	struct node
 	{
-		static const size_t N = 10;
-
-		bounding_box box;
 		bool         leaf;
 		size_t       size;
+		bounding_box box;
 
 		union
 		{

@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with p1.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <cassert>
+
 #include "r_tree.hpp"
 
 utec::r_tree::r_tree():
@@ -21,9 +23,9 @@ utec::r_tree::r_tree():
 {};
 
 utec::r_tree::node::node(const bounding_box& box):
-	box(box),
 	leaf(true),
-	size(0)
+	size(0),
+	box(box)
 {};
 
 void utec::r_tree::_search(node* n, const bounding_box& box, std::vector<coordinate>& v)
@@ -87,7 +89,10 @@ std::istream& utec::operator>>(std::istream& is, r_tree& rt)
 
 std::ostream& utec::operator<<(std::ostream& os, const r_tree& rt)
 {
-	// TODO
+	os.write((char*)r_tree::N, sizeof(r_tree::N));
+
+	if(rt.root)
+		os << *rt.root;
 
 	return os;
 }
@@ -101,7 +106,22 @@ std::istream& utec::operator>>(std::istream& is, r_tree::node& n)
 
 std::ostream& utec::operator<<(std::ostream& os, const r_tree::node& n)
 {
-	// TODO
+	os.write((char*)&n.leaf, sizeof(n.leaf));
+	os.write((char*)&n.size, sizeof(n.size));
+	os.write((char*)&n.box, sizeof(n.box));
+
+	if(n.leaf)
+	{
+		os.write((char*)n.points, sizeof(n.points[0])*n.size);
+	}
+	else
+	{
+		for(size_t i = 0; i < n.size; i++)
+		{
+			assert(n.children[i]);
+			os << *n.children[i];
+		}
+	}
 
 	return os;
 }

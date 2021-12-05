@@ -19,16 +19,22 @@
 namespace utec
 {
 
+struct bounding_box;
+
 struct coordinate
 {
 	double latitude;
 	double longitude;
+
+	bool in(const bounding_box& box);
 };
 
 struct bounding_box
 {
 	coordinate min_c;
 	coordinate max_c;
+
+	bool overlaps(const bounding_box& box);
 };
 
 };

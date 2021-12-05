@@ -16,7 +16,11 @@
 
 #pragma once
 
+#include <functional>
 #include <iostream>
+#include <vector>
+
+#include "geo_utils.hpp"
 
 namespace utec
 {
@@ -24,15 +28,52 @@ namespace utec
 class r_tree
 {
 private:
+	static const size_t N = 10;
+
+	struct node
+	{
+		bool         leaf;
+		size_t       size;
+		bounding_box box;
+
+		union
+		{
+			// Leaf node
+			coordinate points[N];
+
+			// Internal node
+			node*      children[N];
+		};
+
+		node();
+		node(const bounding_box& box);
+
+		~node();
+
+		void big_enough(const coordinate& coord);
+	};
+
+	node* root;
+
+	void _search(node* n, const bounding_box& box, std::vector<coordinate>& v) const;
 
 public:
 	r_tree();
+	~r_tree();
+
+	void insert(const coordinate& coord);
+	std::vector<coordinate> search(const bounding_box& box) const;
 
 	friend std::istream& operator>>(std::istream& is, r_tree& rt);
 	friend std::ostream& operator<<(std::ostream& os, const r_tree& rt);
+	friend std::istream& operator>>(std::istream& is, node& n);
+	friend std::ostream& operator<<(std::ostream& os, const node& n);
 };
 
 std::istream& operator>>(std::istream& is, r_tree& rt);
 std::ostream& operator<<(std::ostream& os, const r_tree& rt);
+
+std::istream& operator>>(std::istream& is, r_tree::node& n);
+std::ostream& operator<<(std::ostream& os, const r_tree::node& n);
 
 };

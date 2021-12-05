@@ -45,7 +45,9 @@ private:
 			node*      children[N];
 		};
 
+		node();
 		node(const bounding_box& box);
+
 		~node();
 	};
 

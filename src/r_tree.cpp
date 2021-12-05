@@ -22,6 +22,11 @@ utec::r_tree::r_tree():
 	root(nullptr)
 {};
 
+utec::r_tree::node::node():
+	leaf(true),
+	size(0)
+{};
+
 utec::r_tree::node::node(const bounding_box& box):
 	leaf(true),
 	size(0),
@@ -82,7 +87,16 @@ utec::r_tree::~r_tree()
 
 std::istream& utec::operator>>(std::istream& is, r_tree& rt)
 {
-	// TODO
+	size_t N;
+	is.read((char*)&N, sizeof(N));
+
+	assert(N == r_tree::N);
+
+	if(!is.eof())
+	{
+		delete rt.root;
+		is >> *(rt.root = new r_tree::node);
+	}
 
 	return is;
 }
@@ -99,7 +113,22 @@ std::ostream& utec::operator<<(std::ostream& os, const r_tree& rt)
 
 std::istream& utec::operator>>(std::istream& is, r_tree::node& n)
 {
-	// TODO
+	is.read((char*)&n.leaf, sizeof(n.leaf));
+	is.read((char*)&n.size, sizeof(n.size));
+	is.read((char*)&n.box, sizeof(n.box));
+
+	if(n.leaf)
+	{
+		is.read((char*)n.points, sizeof(n.points[0])*n.size);
+	}
+	else
+	{
+		for(size_t i = 0; i < n.size; i++)
+		{
+			assert(!is.eof());
+			is >> *(n.children[i] = new r_tree::node);
+		}
+	}
 
 	return is;
 }

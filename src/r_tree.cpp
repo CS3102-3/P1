@@ -72,6 +72,7 @@ void utec::r_tree::insert(const coordinate& coord)
 	}
 	else
 	{
+		// TODO
 	}
 }
 

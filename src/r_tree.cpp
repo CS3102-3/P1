@@ -26,6 +26,28 @@ utec::r_tree::node::node(const bounding_box& box):
 	size(0)
 {};
 
+void utec::r_tree::_search(node* n, const bounding_box& box, std::vector<coordinate>& v)
+{
+	if(n == nullptr || !n->box.overlaps(box))
+		return;
+
+	if(n->leaf)
+	{
+		for(size_t i = 0; i < n->size; i++)
+		{
+			if(n->points[i].in(box))
+				v.push_back(n->points[i]);
+		}
+	}
+	else
+	{
+		for(size_t i = 0; i < n->size; i++)
+		{
+			_search(n->children[i], box, v);
+		}
+	}
+}
+
 void utec::r_tree::insert(const coordinate& coord)
 {
 	// TODO
@@ -33,8 +55,11 @@ void utec::r_tree::insert(const coordinate& coord)
 
 std::vector<utec::coordinate> utec::r_tree::search(const bounding_box& box)
 {
-	// TODO
-	return {};
+	std::vector<coordinate> v;
+
+	_search(root, box, v);
+
+	return v;
 }
 
 utec::r_tree::node::~node()

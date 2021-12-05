@@ -51,6 +51,8 @@ private:
 
 	node* root;
 
+	void _search(node* n, const bounding_box& box, std::vector<coordinate>& v);
+
 public:
 	r_tree();
 	~r_tree();

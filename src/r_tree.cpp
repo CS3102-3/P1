@@ -91,3 +91,17 @@ std::ostream& utec::operator<<(std::ostream& os, const r_tree& rt)
 
 	return os;
 }
+
+std::istream& utec::operator>>(std::istream& is, r_tree::node& n)
+{
+	// TODO
+
+	return is;
+}
+
+std::ostream& utec::operator<<(std::ostream& os, const r_tree::node& n)
+{
+	// TODO
+
+	return os;
+}

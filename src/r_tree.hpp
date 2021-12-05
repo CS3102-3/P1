@@ -62,9 +62,14 @@ public:
 
 	friend std::istream& operator>>(std::istream& is, r_tree& rt);
 	friend std::ostream& operator<<(std::ostream& os, const r_tree& rt);
+	friend std::istream& operator>>(std::istream& is, node& n);
+	friend std::ostream& operator<<(std::ostream& os, const node& n);
 };
 
 std::istream& operator>>(std::istream& is, r_tree& rt);
 std::ostream& operator<<(std::ostream& os, const r_tree& rt);
+
+std::istream& operator>>(std::istream& is, r_tree::node& n);
+std::ostream& operator<<(std::ostream& os, const r_tree::node& n);
 
 };

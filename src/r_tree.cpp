@@ -20,11 +20,22 @@ utec::r_tree::r_tree():
 	root(nullptr)
 {};
 
-utec::r_tree::node::node(bounding_box box):
+utec::r_tree::node::node(const bounding_box& box):
 	box(box),
 	leaf(true),
 	size(0)
 {};
+
+void utec::r_tree::insert(const coordinate& coord)
+{
+	// TODO
+}
+
+std::vector<utec::coordinate> utec::r_tree::search(const bounding_box& box)
+{
+	// TODO
+	return {};
+}
 
 utec::r_tree::node::~node()
 {

@@ -101,11 +101,8 @@ int utec::cmd::index()
 {
 	r_tree rt;
 
-	for(auto [lat, lon]: csv_parser(csv_paths))
-	{
-		// TODO
-		std::cout << lat << ' ' << lon << '\n';
-	}
+	for(auto coord: csv_parser(csv_paths))
+		rt.insert(coord);
 
 	std::ofstream ofs(r_tree_path, std::ios::binary);
 
@@ -145,15 +142,10 @@ int utec::cmd::search()
 	geojson_parser parser(query,
 		[&rt](const bounding_box& box) -> bool
 		{
-			// TODO
-			std::cerr
-				<< "min latitude: " << box.min_c.latitude << '\n'
-				<< "min longitude: " << box.min_c.longitude << '\n'
-				<< "max latitude: " << box.max_c.latitude << '\n'
-				<< "max longitude: " << box.max_c.longitude << '\n'
-			;
+			for(const auto& [lat, lon]: rt.search(box))
+				std::cout << lat << ' ' << lon << '\n';
 
-			return false;
+			return true;
 		}
 	);
 

@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <functional>
 #include <iostream>
 
 #include "geo_utils.hpp"
@@ -31,8 +32,8 @@ private:
 		static const size_t N = 10;
 
 		bounding_box box;
-		bool leaf;
-		size_t size;
+		bool         leaf;
+		size_t       size;
 
 		union
 		{
@@ -43,7 +44,7 @@ private:
 			node*      children[N];
 		};
 
-		node(bounding_box box);
+		node(const bounding_box& box);
 		~node();
 	};
 
@@ -52,6 +53,9 @@ private:
 public:
 	r_tree();
 	~r_tree();
+
+	void insert(const coordinate& coord);
+	std::vector<coordinate> search(const bounding_box& box);
 
 	friend std::istream& operator>>(std::istream& is, r_tree& rt);
 	friend std::ostream& operator<<(std::ostream& os, const r_tree& rt);

@@ -16,7 +16,31 @@
 
 #include "r_tree.hpp"
 
-utec::r_tree::r_tree(){};
+utec::r_tree::r_tree():
+	root(nullptr)
+{};
+
+utec::r_tree::node::node(bounding_box box):
+	box(box),
+	leaf(true),
+	size(0)
+{};
+
+utec::r_tree::node::~node()
+{
+	if(!leaf)
+	{
+		for(size_t i = 0; i < size; i++)
+		{
+			delete children[i];
+		}
+	}
+}
+
+utec::r_tree::~r_tree()
+{
+	delete(root);
+}
 
 std::istream& utec::operator>>(std::istream& is, r_tree& rt)
 {

@@ -18,15 +18,40 @@
 
 #include <iostream>
 
+#include "geo_utils.hpp"
+
 namespace utec
 {
 
 class r_tree
 {
 private:
+	struct node
+	{
+		static const size_t N = 10;
+
+		bounding_box box;
+		bool leaf;
+		size_t size;
+
+		union
+		{
+			// Leaf node
+			coordinate points[N];
+
+			// Internal node
+			node*      children[N];
+		};
+
+		node(bounding_box box);
+		~node();
+	};
+
+	node* root;
 
 public:
 	r_tree();
+	~r_tree();
 
 	friend std::istream& operator>>(std::istream& is, r_tree& rt);
 	friend std::ostream& operator<<(std::ostream& os, const r_tree& rt);

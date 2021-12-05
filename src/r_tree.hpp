@@ -49,18 +49,20 @@ private:
 		node(const bounding_box& box);
 
 		~node();
+
+		void big_enough(const coordinate& coord);
 	};
 
 	node* root;
 
-	void _search(node* n, const bounding_box& box, std::vector<coordinate>& v);
+	void _search(node* n, const bounding_box& box, std::vector<coordinate>& v) const;
 
 public:
 	r_tree();
 	~r_tree();
 
 	void insert(const coordinate& coord);
-	std::vector<coordinate> search(const bounding_box& box);
+	std::vector<coordinate> search(const bounding_box& box) const;
 
 	friend std::istream& operator>>(std::istream& is, r_tree& rt);
 	friend std::ostream& operator<<(std::ostream& os, const r_tree& rt);

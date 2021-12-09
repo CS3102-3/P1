@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include <span>
-#include <string>
 #include <fstream>
+#include <string>
+#include <vector>
 
 #include "geo_utils.hpp"
 
@@ -28,7 +28,7 @@ namespace utec
 class csv_parser
 {
 private:
-	std::span<std::string> csv_paths;
+	const std::vector<std::string>& csv_paths;
 
 public:
 	class iterator
@@ -106,7 +106,7 @@ public:
 		return {*this, true};
 	}
 
-	csv_parser(std::span<std::string> csv_paths):
+	csv_parser(const std::vector<std::string>& csv_paths):
 		csv_paths(csv_paths)
 	{};
 };

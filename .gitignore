@@ -1,3 +1,6 @@
+.idea/
+cmake-build-debug/
+
 # create by https://github.com/iamcco/coc-gitignore (Sun Apr 12 2020 11:00:38 GMT-0500 (hora estándar de Perú))
 # CMake.gitignore:
 CMakeLists.txt.user

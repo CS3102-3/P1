@@ -71,6 +71,7 @@ void utec::r_tree::_insert(coordinate &coord, node *n) {
             n->children[i]->box;
         }
         _insert(coord,);
+        return;
     }
 }
 

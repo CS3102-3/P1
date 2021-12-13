@@ -54,6 +54,7 @@ namespace utec {
 
         void _search(node *n, const bounding_box &box, std::vector<coordinate> &v) const;
 
+        void _insert(coordinate &coord, node *n);
 
     public:
         r_tree();

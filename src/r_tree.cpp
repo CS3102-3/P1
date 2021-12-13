@@ -53,8 +53,18 @@ void utec::r_tree::_search(node *n, const bounding_box &box, std::vector<coordin
     }
 }
 
-void utec::r_tree::_insert() {
+void utec::r_tree::_insert(coordinate &coord, node *n) {
+    if (n->leaf) {
 
+    } else {
+        for (size_t i = 0; i < n->size; ++i) {
+            if (coord.in(n->children[i]->box)) {
+                _insert(coord, n->children[i]);
+                return;
+            }
+        }
+
+    }
 }
 
 void utec::r_tree::insert(const coordinate &coord) {

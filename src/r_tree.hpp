@@ -22,58 +22,63 @@
 
 #include "geo_utils.hpp"
 
-namespace utec
-{
+namespace utec {
 
-class r_tree
-{
-private:
-	static const size_t N = 10;
+    class r_tree {
+    private:
+        static const size_t N = 10;
 
-	struct node
-	{
-		bool         leaf;
-		size_t       size;
-		bounding_box box;
+        struct node {
+            bool leaf;
+            size_t size;
+            bounding_box box;
 
-		union
-		{
-			// Leaf node
-			coordinate points[N];
+            union {
+                // Leaf node
+                coordinate points[N];
 
-			// Internal node
-			node*      children[N];
-		};
+                // Internal node
+                node *children[N];
+            };
 
-		node();
-		node(const bounding_box& box);
+            node();
 
-		~node();
+            node(const bounding_box &box);
 
-		void big_enough(const coordinate& coord);
-	};
+            ~node();
 
-	node* root;
+            void big_enough(const coordinate &coord);
+        };
 
-	void _search(node* n, const bounding_box& box, std::vector<coordinate>& v) const;
+        node *root;
 
-public:
-	r_tree();
-	~r_tree();
+        void _search(node *n, const bounding_box &box, std::vector<coordinate> &v) const;
 
-	void insert(const coordinate& coord);
-	std::vector<coordinate> search(const bounding_box& box) const;
 
-	friend std::istream& operator>>(std::istream& is, r_tree& rt);
-	friend std::ostream& operator<<(std::ostream& os, const r_tree& rt);
-	friend std::istream& operator>>(std::istream& is, node& n);
-	friend std::ostream& operator<<(std::ostream& os, const node& n);
-};
+    public:
+        r_tree();
 
-std::istream& operator>>(std::istream& is, r_tree& rt);
-std::ostream& operator<<(std::ostream& os, const r_tree& rt);
+        ~r_tree();
 
-std::istream& operator>>(std::istream& is, r_tree::node& n);
-std::ostream& operator<<(std::ostream& os, const r_tree::node& n);
+        void insert(const coordinate &coord);
+
+        std::vector<coordinate> search(const bounding_box &box) const;
+
+        friend std::istream &operator>>(std::istream &is, r_tree &rt);
+
+        friend std::ostream &operator<<(std::ostream &os, const r_tree &rt);
+
+        friend std::istream &operator>>(std::istream &is, node &n);
+
+        friend std::ostream &operator<<(std::ostream &os, const node &n);
+    };
+
+    std::istream &operator>>(std::istream &is, r_tree &rt);
+
+    std::ostream &operator<<(std::ostream &os, const r_tree &rt);
+
+    std::istream &operator>>(std::istream &is, r_tree::node &n);
+
+    std::ostream &operator<<(std::ostream &os, const r_tree::node &n);
 
 };

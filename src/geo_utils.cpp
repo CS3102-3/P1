@@ -16,38 +16,33 @@
 
 #include "geo_utils.hpp"
 
-bool utec::coordinate::in(const bounding_box& box)
-{
-	return latitude  >= box.min_c.latitude
-		&& longitude >= box.min_c.longitude
-		&& latitude  <= box.max_c.latitude
-		&& longitude <= box.max_c.longitude
-	;
+bool utec::coordinate::in(const bounding_box &box) {
+    return latitude >= box.min_c.latitude
+           && longitude >= box.min_c.longitude
+           && latitude <= box.max_c.latitude
+           && longitude <= box.max_c.longitude;
 }
 
-bool utec::bounding_box::overlaps(const bounding_box& box)
-{
-	bool in_lat =
-		(
-			min_c.latitude >= box.min_c.latitude &&
-			min_c.latitude <= box.max_c.latitude
-		) ||
-		(
-			max_c.latitude >= box.min_c.latitude &&
-			max_c.latitude <= box.max_c.latitude
-		)
-	;
+bool utec::bounding_box::overlaps(const bounding_box &box) {
+    bool in_lat =
+            (
+                    min_c.latitude >= box.min_c.latitude &&
+                    min_c.latitude <= box.max_c.latitude
+            ) ||
+            (
+                    max_c.latitude >= box.min_c.latitude &&
+                    max_c.latitude <= box.max_c.latitude
+            );
 
-	bool in_lon =
-		(
-			min_c.longitude >= box.min_c.longitude &&
-			min_c.longitude <= box.max_c.longitude
-		) ||
-		(
-			max_c.longitude >= box.min_c.longitude &&
-			max_c.longitude <= box.max_c.longitude
-		)
-	;
+    bool in_lon =
+            (
+                    min_c.longitude >= box.min_c.longitude &&
+                    min_c.longitude <= box.max_c.longitude
+            ) ||
+            (
+                    max_c.longitude >= box.min_c.longitude &&
+                    max_c.longitude <= box.max_c.longitude
+            );
 
-	return in_lat && in_lon;
+    return in_lat && in_lon;
 }

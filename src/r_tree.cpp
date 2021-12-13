@@ -18,155 +18,127 @@
 
 #include "r_tree.hpp"
 
-utec::r_tree::r_tree():
-	root(nullptr)
-{};
+utec::r_tree::r_tree() :
+        root(nullptr) {};
 
-utec::r_tree::node::node():
-	leaf(true),
-	size(0)
-{};
+utec::r_tree::node::node() :
+        leaf(true),
+        size(0) {};
 
-utec::r_tree::node::node(const bounding_box& box):
-	leaf(true),
-	size(0),
-	box(box)
-{};
+utec::r_tree::node::node(const bounding_box &box) :
+        leaf(true),
+        size(0),
+        box(box) {};
 
-void utec::r_tree::node::big_enough(const coordinate& coord)
-{
-	box.min_c.latitude  = std::min(box.min_c.latitude,  coord.latitude);
-	box.min_c.longitude = std::min(box.min_c.longitude, coord.longitude);
-	box.max_c.latitude  = std::max(box.max_c.latitude,  coord.latitude);
-	box.max_c.longitude = std::max(box.max_c.longitude, coord.longitude);
+void utec::r_tree::node::big_enough(const coordinate &coord) {
+    box.min_c.latitude = std::min(box.min_c.latitude, coord.latitude);
+    box.min_c.longitude = std::min(box.min_c.longitude, coord.longitude);
+    box.max_c.latitude = std::max(box.max_c.latitude, coord.latitude);
+    box.max_c.longitude = std::max(box.max_c.longitude, coord.longitude);
 }
 
-void utec::r_tree::_search(node* n, const bounding_box& box, std::vector<coordinate>& v) const
-{
-	if(n == nullptr || !n->box.overlaps(box))
-		return;
+void utec::r_tree::_search(node *n, const bounding_box &box, std::vector<coordinate> &v) const {
+    if (n == nullptr || !n->box.overlaps(box))
+        return;
 
-	if(n->leaf)
-	{
-		for(size_t i = 0; i < n->size; i++)
-		{
-			if(n->points[i].in(box))
-				v.push_back(n->points[i]);
-		}
-	}
-	else
-	{
-		for(size_t i = 0; i < n->size; i++)
-		{
-			_search(n->children[i], box, v);
-		}
-	}
+    if (n->leaf) {
+        for (size_t i = 0; i < n->size; i++) {
+            if (n->points[i].in(box))
+                v.push_back(n->points[i]);
+        }
+    } else {
+        for (size_t i = 0; i < n->size; i++) {
+            _search(n->children[i], box, v);
+        }
+    }
 }
 
-void utec::r_tree::insert(const coordinate& coord)
-{
-	if(root == nullptr)
-	{
-		root = new node({coord, coord});
-		root->points[root->size++] = coord;
-	}
-	else
-	{
-		// TODO
-	}
+void utec::r_tree::_insert() {
+
 }
 
-std::vector<utec::coordinate> utec::r_tree::search(const bounding_box& box) const
-{
-	std::vector<coordinate> v;
-
-	_search(root, box, v);
-
-	return v;
+void utec::r_tree::insert(const coordinate &coord) {
+    if (root == nullptr) {
+        root = new node({coord, coord});
+        root->points[root->size++] = coord;
+    } else {
+        // TODO
+    }
 }
 
-utec::r_tree::node::~node()
-{
-	if(!leaf)
-	{
-		for(size_t i = 0; i < size; i++)
-		{
-			delete children[i];
-		}
-	}
+std::vector<utec::coordinate> utec::r_tree::search(const bounding_box &box) const {
+    std::vector<coordinate> v;
+
+    _search(root, box, v);
+
+    return v;
 }
 
-utec::r_tree::~r_tree()
-{
-	delete(root);
+utec::r_tree::node::~node() {
+    if (!leaf) {
+        for (size_t i = 0; i < size; i++) {
+            delete children[i];
+        }
+    }
 }
 
-std::istream& utec::operator>>(std::istream& is, r_tree& rt)
-{
-	size_t N;
-	is.read((char*)&N, sizeof(N));
-
-	assert(N == r_tree::N);
-
-	if(!is.eof())
-	{
-		delete rt.root;
-		is >> *(rt.root = new r_tree::node);
-	}
-
-	return is;
+utec::r_tree::~r_tree() {
+    delete (root);
 }
 
-std::ostream& utec::operator<<(std::ostream& os, const r_tree& rt)
-{
-	os.write((char*)r_tree::N, sizeof(r_tree::N));
+std::istream &utec::operator>>(std::istream &is, r_tree &rt) {
+    size_t N;
+    is.read((char *) &N, sizeof(N));
 
-	if(rt.root)
-		os << *rt.root;
+    assert(N == r_tree::N);
 
-	return os;
+    if (!is.eof()) {
+        delete rt.root;
+        is >> *(rt.root = new r_tree::node);
+    }
+
+    return is;
 }
 
-std::istream& utec::operator>>(std::istream& is, r_tree::node& n)
-{
-	is.read((char*)&n.leaf, sizeof(n.leaf));
-	is.read((char*)&n.size, sizeof(n.size));
-	is.read((char*)&n.box, sizeof(n.box));
+std::ostream &utec::operator<<(std::ostream &os, const r_tree &rt) {
+    os.write((char *) r_tree::N, sizeof(r_tree::N));
 
-	if(n.leaf)
-	{
-		is.read((char*)n.points, sizeof(n.points[0])*n.size);
-	}
-	else
-	{
-		for(size_t i = 0; i < n.size; i++)
-		{
-			assert(!is.eof());
-			is >> *(n.children[i] = new r_tree::node);
-		}
-	}
+    if (rt.root)
+        os << *rt.root;
 
-	return is;
+    return os;
 }
 
-std::ostream& utec::operator<<(std::ostream& os, const r_tree::node& n)
-{
-	os.write((char*)&n.leaf, sizeof(n.leaf));
-	os.write((char*)&n.size, sizeof(n.size));
-	os.write((char*)&n.box, sizeof(n.box));
+std::istream &utec::operator>>(std::istream &is, r_tree::node &n) {
+    is.read((char *) &n.leaf, sizeof(n.leaf));
+    is.read((char *) &n.size, sizeof(n.size));
+    is.read((char *) &n.box, sizeof(n.box));
 
-	if(n.leaf)
-	{
-		os.write((char*)n.points, sizeof(n.points[0])*n.size);
-	}
-	else
-	{
-		for(size_t i = 0; i < n.size; i++)
-		{
-			assert(n.children[i]);
-			os << *n.children[i];
-		}
-	}
+    if (n.leaf) {
+        is.read((char *) n.points, sizeof(n.points[0]) * n.size);
+    } else {
+        for (size_t i = 0; i < n.size; i++) {
+            assert(!is.eof());
+            is >> *(n.children[i] = new r_tree::node);
+        }
+    }
 
-	return os;
+    return is;
+}
+
+std::ostream &utec::operator<<(std::ostream &os, const r_tree::node &n) {
+    os.write((char *) &n.leaf, sizeof(n.leaf));
+    os.write((char *) &n.size, sizeof(n.size));
+    os.write((char *) &n.box, sizeof(n.box));
+
+    if (n.leaf) {
+        os.write((char *) n.points, sizeof(n.points[0]) * n.size);
+    } else {
+        for (size_t i = 0; i < n.size; i++) {
+            assert(n.children[i]);
+            os << *n.children[i];
+        }
+    }
+
+    return os;
 }

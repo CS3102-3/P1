@@ -19,6 +19,9 @@
 #include <functional>
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <cassert>
+#include <unordered_set>
 
 #include "geo_utils.hpp"
 
@@ -35,7 +38,7 @@ namespace utec {
 
             union {
                 // Leaf node
-                coordinate points[N];
+                coordinate points[N]{};
 
                 // Internal node
                 node *children[N];
@@ -43,18 +46,38 @@ namespace utec {
 
             node();
 
-            node(const bounding_box &box);
+            explicit node(const bounding_box &box);
+
+            explicit node(const std::vector<coordinate> &coordinates);
+
+            explicit node(const std::vector<node*> &childrens);
 
             ~node();
 
+            void updatePoints(const std::vector<coordinate> &);
+
+            void updateChildrens(const std::vector<node*> &);
+
             void big_enough(const coordinate &coord);
+
+            void big_enough(bounding_box &box);
         };
 
         node *root;
 
         void _search(node *n, const bounding_box &box, std::vector<coordinate> &v) const;
 
-        void _insert(coordinate &coord, node *n);
+        template<typename T>
+        T pickNext(const std::vector<T> &values, std::unordered_set<size_t> &set, const bounding_box &,
+                   const bounding_box &);
+
+        template<typename T>
+        std::pair<T, T> pickSeeds(const std::vector<T> &values, std::unordered_set<size_t> &set);
+
+        template<typename T>
+        std::pair<std::vector<T>, std::vector<T>> quadraticSplit(const std::vector<T> &);
+
+        node *_insert(coordinate &coord, node *n);
 
     public:
         r_tree();
@@ -82,4 +105,4 @@ namespace utec {
 
     std::ostream &operator<<(std::ostream &os, const r_tree::node &n);
 
-};
+}
